@@ -1,0 +1,11 @@
+# 运行期产物（测试/本地试用都可能生成）——永远不要提交
+__pycache__/
+*.pyc
+*.db
+*.db-wal
+*.db-shm
+settings.json
+screenshot/
+usage_stats.json
+usage_events.log
+capture_events.log
