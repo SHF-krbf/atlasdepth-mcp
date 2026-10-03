@@ -173,7 +173,7 @@ redistribute it, including commercially; keep the license notice and the attribu
 (Apache-2.0 §6 does not grant trademark rights, so please do not present a modified build as the
 official one).
 
-Copyright © 2026 <YOUR NAME or GitHub handle>
+Copyright © 2026 SHF
 
 **The Shentu app itself is not open source.** It is free to use (personal and internal business use;
 see the one-page license notice shipped with the app), it is **not** published as source, and it is
