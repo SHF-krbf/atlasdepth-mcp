@@ -59,6 +59,21 @@ DDL = ("CREATE TABLE screenshots (id INTEGER PRIMARY KEY AUTOINCREMENT, file_pat
        " window_title TEXT, project TEXT, source TEXT, duration REAL, ocr_conf REAL)")
 
 
+def child_env():
+    """起子进程时用的环境：**把子进程的 stdout/stderr 钉成 UTF-8**（2026-10-04 修，作者实测抓到的真缺陷）。
+
+    为什么必须钉：适配器只在 **JSON-RPC 主线**里把三条流 `reconfigure` 成 UTF-8，
+    而 `--grant` / `--revoke` / `--status` / `--audit` 这些**命令行路径在它之前**就打印完了 ⇒
+    在**中文 Windows**（控制台 cp936）上，它们吐的是 **cp936 字节**，而本脚本按 UTF-8 解码 ⇒
+    `"已授权"` 找不到 ⇒ 判红。**产品没问题，是"验的方法"挑了机器**：
+    仓库挂出去之后，陌生人照 README 跑这条命令就会看到一个红的失败（实测复现）。
+    钉法：与门禁判据 0.0.60 同一条规矩——只设 `PYTHONIOENCODING`，**不动** `PYTHONUTF8`（那会顺带改别的编码行为）。
+    """
+    env = dict(os.environ)
+    env["PYTHONIOENCODING"] = "utf-8"
+    return env
+
+
 def now(delta_min=0):
     """夹具的时间戳**必须与真库同格式**（2026-10-03 修，这是个"门禁假绿"的教训）。
 
@@ -123,7 +138,7 @@ class Client:
         try:
             self.p = subprocess.Popen([sys.executable, SERVER, "--instance", inst],
                                       stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                      stderr=subprocess.PIPE, cwd=BASE,
+                                      stderr=subprocess.PIPE, cwd=BASE, env=child_env(),
                                       text=True, encoding="utf-8", errors="replace", bufsize=1)
         except Exception as _e:
             raise AssertionError("适配器进程起不来：%s: %s\n（脚本：%s）"
@@ -198,7 +213,8 @@ def main():
         ck("拒绝时告诉 agent 怎么授权", "--grant 30" in json.dumps(p2, ensure_ascii=False), str(p2)[:200])
         # ④ 授权（走 CLI，与用户实际动作一致）
         g = subprocess.run([sys.executable, SERVER, "--instance", tmp, "--grant", "5"],
-                           capture_output=True, text=True, encoding="utf-8", cwd=BASE, timeout=60)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace",
+                           cwd=BASE, env=child_env(), timeout=60)
         ck("--grant 命令行可用", g.returncode == 0 and "已授权" in (g.stdout or ""), (g.stdout or "")[:120])
         r = c.tool("memory_recent", {"minutes": 30, "limit": 20})
         p3 = json.loads(r["result"]["content"][0]["text"])
@@ -251,7 +267,8 @@ def main():
         ck("审计含 agent 名与工具名", ("自检客户端" in txt) and ("memory_recent" in txt), txt[-200:])
         # ⑧ 撤销
         rv = subprocess.run([sys.executable, SERVER, "--instance", tmp, "--revoke"],
-                            capture_output=True, text=True, encoding="utf-8", cwd=BASE, timeout=60)
+                            capture_output=True, text=True, encoding="utf-8", errors="replace",
+                            cwd=BASE, env=child_env(), timeout=60)
         ck("--revoke 可用", rv.returncode == 0, (rv.stdout or "")[:120])
         r = c.tool("memory_recent", {"minutes": 30})
         p7 = json.loads(r["result"]["content"][0]["text"])
