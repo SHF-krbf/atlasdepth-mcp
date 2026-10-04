@@ -496,7 +496,8 @@ def main():
         print("已授权：%s 分钟内可读（到 %s）\n  %s"
               % (a.grant, _dt.datetime.fromtimestamp(until).strftime("%Y-%m-%d %H:%M:%S"), p))
         if a.include_private:
-            print("⚠️ 私人库也被授权外出了——用完请立刻 --revoke")
+            # 2026-10-04：控制台只打 GBK 能编码的字（⚠️ 在中文 Windows 控制台会抛 UnicodeEncodeError）
+            print("【注意】私人库也被授权外出了——用完请立刻 --revoke")
         return 0
     if a.revoke:
         print("已撤销授权（文件已删）。" if revoke(inst) else "本来就没有授权文件。")
