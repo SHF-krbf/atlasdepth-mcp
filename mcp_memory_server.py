@@ -15,13 +15,13 @@
 4. **锚点化摘要，不倾倒原文**：默认给 `{id, 时间, 应用, 窗口标题, 文本(截断), 原图路径, 可信度档}`；
    **OCR 全文只在 agent 明确索要时**（`memory_evidence`）才给——顺带解决 agent 的 token 成本。
 
-用法（都在你本机、都要你自己动手）：
+用法（都在你本机、都要你自己动手；`<实例目录>` 换成**你自己**装深图的文件夹）：
 
-    python mcp_memory_server.py --instance "D:\\深图自用"            # 当 MCP server 跑（由 agent 启动）
-    python mcp_memory_server.py --instance "D:\\深图自用" --grant 30 # 授权 30 分钟
-    python mcp_memory_server.py --instance "D:\\深图自用" --revoke   # 立刻断掉
-    python mcp_memory_server.py --instance "D:\\深图自用" --status   # 看现在授没授权
-    python mcp_memory_server.py --instance "D:\\深图自用" --audit 20 # 看最近 20 条审计
+    python mcp_memory_server.py --instance "C:\\path\\to\\your\\Shentu"            # 当 MCP server 跑（由 agent 启动）
+    python mcp_memory_server.py --instance "C:\\path\\to\\your\\Shentu" --grant 30 # 授权 30 分钟
+    python mcp_memory_server.py --instance "C:\\path\\to\\your\\Shentu" --revoke   # 立刻断掉
+    python mcp_memory_server.py --instance "C:\\path\\to\\your\\Shentu" --status   # 看现在授没授权
+    python mcp_memory_server.py --instance "C:\\path\\to\\your\\Shentu" --audit 20 # 看最近 20 条审计
 
 **stdout 只承载 JSON-RPC**（任何日志/提示都走 stderr 与审计文件）——否则 agent 会解析失败。
 """
