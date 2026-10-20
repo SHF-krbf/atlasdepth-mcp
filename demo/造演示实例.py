@@ -152,14 +152,14 @@ def guidance(to: str) -> str:
       trae cli config edit
     在 trae_cli.yaml 里加：
       mcp_servers:
-        shentu-memory:
+        atlasdepth-memory:
           command: "{py}"
           args: ["{server}", "--instance", "{to}"]
 
   · Claude Desktop / 其它（claude_desktop_config.json，字段名大同小异）：
     {{
       "mcpServers": {{
-        "shentu-memory": {{
+        "atlasdepth-memory": {{
           "command": "{py}",
           "args": ["{server}", "--instance", "{to}"]
         }}

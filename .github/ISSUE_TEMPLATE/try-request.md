@@ -1,6 +1,6 @@
 ---
 name: Try request
-about: Ask for the Shentu desktop app (the half this adapter plugs into)
+about: Ask for the AtlasDepth desktop app (the half this adapter plugs into)
 title: "Try request"
 labels: try-request
 ---
@@ -8,8 +8,8 @@ labels: try-request
 <!--
 Thanks for being interested. Short version of the situation:
 
-This repository is the **agent-facing half** of Shentu — an MCP adapter that reads a local
-Shentu instance. The Windows desktop app that actually records your screen is **not publicly
+This repository is the **agent-facing half** of AtlasDepth — an MCP adapter that reads a local
+AtlasDepth instance. The Windows desktop app that actually records your screen is **not publicly
 distributed yet**: it is in a small two-week trial, because what is worth testing is not
 "another screen recorder" but *what people actually manage to retrieve*.
 

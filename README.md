@@ -1,11 +1,11 @@
-# Shentu · Memory Layer for AI agents (MCP over stdio)
+# AtlasDepth · Memory Layer for AI agents (MCP over stdio)
 
 **One line**: give the AI agent on *your own machine* a way to ask
 *"where is that quotation I saw last week?"* — and get back **an answer with its
 provenance**, instead of handing over your whole screen history.
 
 This repository publishes the **memory adapter** only: a single-file,
-**standard-library-only** MCP server that reads a local Shentu instance
+**standard-library-only** MCP server that reads a local AtlasDepth instance
 (`screen_memory.db`) **read-only**.
 
 ---
@@ -13,7 +13,7 @@ This repository publishes the **memory adapter** only: a single-file,
 ## Why this exists (the problem it solves)
 
 Agents are good at writing things and bad at remembering *what actually happened*.
-Shentu records what you saw on screen locally (event-driven, ~1 frame per change),
+AtlasDepth records what you saw on screen locally (event-driven, ~1 frame per change),
 OCR-indexes it, and keeps the **original image** next to the text. This adapter lets
 an agent retrieve **anchored** memories — time, app, window title, a text snippet,
 and the path to the source image — so the agent can answer **and show where it came from**.
@@ -69,9 +69,9 @@ Every call — **including refused ones** — is appended to a local audit log
 
 ## Quick start
 
-### Try it in 2 minutes (no Shentu install needed)
+### Try it in 2 minutes (no AtlasDepth install needed)
 
-The adapter reads a local Shentu instance — but you do not need one to see how it behaves.
+The adapter reads a local AtlasDepth instance — but you do not need one to see how it behaves.
 Build a **fictional** demo instance (it contains "示例客户 / 样例发票 / 00000001" only), and the
 script prints the exact registration snippet, the authorize/revoke commands, three questions to ask
 your agent, and **what counts as success**:
@@ -84,18 +84,20 @@ That instance has a record from **another project**, a **private** row, an **ove
 row **outside the 30-minute window** — so you can watch all four boundaries hold in one run.
 Delete the folder when you are done; it touches nothing else.
 
-### With your own Shentu instance
+### With your own AtlasDepth instance
+
+The app's folder is named `深图` — that is its Chinese name. Use whatever your folder is actually called.
 
 ```bash
 # 1) check status (deny by default)
-python mcp_memory_server.py --instance "/path/to/your/Shentu/folder" --status
+python mcp_memory_server.py --instance "/path/to/your/深图" --status
 
 # 2) authorize for 30 minutes — this is the human step
-python mcp_memory_server.py --instance "/path/to/your/Shentu/folder" --grant 30
+python mcp_memory_server.py --instance "/path/to/your/深图" --grant 30
 
 # 3) after you are done, cut it off; and see who asked what
-python mcp_memory_server.py --instance "/path/to/your/Shentu/folder" --revoke
-python mcp_memory_server.py --instance "/path/to/your/Shentu/folder" --audit 20
+python mcp_memory_server.py --instance "/path/to/your/深图" --revoke
+python mcp_memory_server.py --instance "/path/to/your/深图" --audit 20
 ```
 
 Register it in any MCP-capable client (stdio server), e.g. Claude Desktop's
@@ -104,10 +106,10 @@ Register it in any MCP-capable client (stdio server), e.g. Claude Desktop's
 ```json
 {
   "mcpServers": {
-    "shentu-memory": {
+    "atlasdepth-memory": {
       "command": "python",
       "args": ["/absolute/path/to/mcp_memory_server.py",
-               "--instance", "/path/to/your/Shentu/folder"]
+               "--instance", "/path/to/your/深图"]
     }
   }
 }
@@ -116,7 +118,7 @@ Register it in any MCP-capable client (stdio server), e.g. Claude Desktop's
 Registering does **not** grant access — you still have to run `--grant`.
 **Recommendation: `--revoke` when you are done.** Do not leave it authorized permanently.
 
-The instance directory is where the Shentu app keeps `settings.json` and
+The instance directory is where the AtlasDepth app keeps `settings.json` and
 `screen_memory.db` (the app itself is Windows-only for now). You can also set
 `DSH_INSTANCE` instead of passing `--instance`.
 
@@ -175,7 +177,7 @@ official one).
 
 Copyright © 2026 SHF
 
-**The Shentu app itself is not open source.** It is free to use (personal and internal business use;
+**The AtlasDepth app itself is not open source.** It is free to use (personal and internal business use;
 see the one-page license notice shipped with the app), it is **not** published as source, and it is
 handed out through the trial request route above — please do not redistribute the app.
 
@@ -188,4 +190,4 @@ handed out through the trial request route above — please do not redistribute 
   needs Python 3 on your machine (that is also why the demo instance exists).
 * **No GUI for consent**: authorizing/revoking is a command, not a switch in the app.
 * **Read-only**: agents cannot write into the memory through this adapter. Writes
-  only happen through the Shentu app itself, driven by the human.
+  only happen through the AtlasDepth app itself, driven by the human.

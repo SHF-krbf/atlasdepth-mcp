@@ -40,7 +40,7 @@ def _find_server():
                 _override = sys.argv[_i + 1]
     except Exception:
         _override = ""
-    _override = _override or os.environ.get("SHENTU_SERVER", "")
+    _override = _override or os.environ.get("ATLASDEPTH_SERVER", "")
     if _override and os.path.isfile(_override):
         return os.path.abspath(_override)
     _here = os.path.dirname(os.path.abspath(__file__))
@@ -194,7 +194,7 @@ def main():
         # ① 握手
         r = c.call("initialize", {"protocolVersion": "2024-11-05",
                                   "clientInfo": {"name": "自检客户端", "version": "1"}})
-        ck("initialize 握手", (r.get("result") or {}).get("serverInfo", {}).get("name") == "shentu-memory",
+        ck("initialize 握手", (r.get("result") or {}).get("serverInfo", {}).get("name") == "atlasdepth-memory",
            str(r)[:160])
         # ② 工具清单
         r = c.call("tools/list")

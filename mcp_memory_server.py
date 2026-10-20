@@ -17,11 +17,11 @@
 
 用法（都在你本机、都要你自己动手；`<实例目录>` 换成**你自己**装深图的文件夹）：
 
-    python mcp_memory_server.py --instance "C:\\path\\to\\your\\Shentu"            # 当 MCP server 跑（由 agent 启动）
-    python mcp_memory_server.py --instance "C:\\path\\to\\your\\Shentu" --grant 30 # 授权 30 分钟
-    python mcp_memory_server.py --instance "C:\\path\\to\\your\\Shentu" --revoke   # 立刻断掉
-    python mcp_memory_server.py --instance "C:\\path\\to\\your\\Shentu" --status   # 看现在授没授权
-    python mcp_memory_server.py --instance "C:\\path\\to\\your\\Shentu" --audit 20 # 看最近 20 条审计
+    python mcp_memory_server.py --instance "C:\\path\\to\\your\\深图"            # 当 MCP server 跑（由 agent 启动）
+    python mcp_memory_server.py --instance "C:\\path\\to\\your\\深图" --grant 30 # 授权 30 分钟
+    python mcp_memory_server.py --instance "C:\\path\\to\\your\\深图" --revoke   # 立刻断掉
+    python mcp_memory_server.py --instance "C:\\path\\to\\your\\深图" --status   # 看现在授没授权
+    python mcp_memory_server.py --instance "C:\\path\\to\\your\\深图" --audit 20 # 看最近 20 条审计
 
 **stdout 只承载 JSON-RPC**（任何日志/提示都走 stderr 与审计文件）——否则 agent 会解析失败。
 """
@@ -33,7 +33,7 @@ import sqlite3
 import sys
 import time
 
-SERVER_NAME = "shentu-memory"
+SERVER_NAME = "atlasdepth-memory"
 SERVER_VERSION = "0.1"
 PROTOCOL_VERSION = "2024-11-05"
 # 2026-10-02：**默认实例目录不写死任何人的机器**（本模块是要单独发给别人的：
